@@ -91,6 +91,10 @@ public class Consulta implements Agendavel{
         this.horario = horario;
     }
 
+    public void setProntuario(Prontuario prontuario) {
+        this.prontuario = prontuario;
+    }
+
     @Override
     public String toString() {
             return String.format(

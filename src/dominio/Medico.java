@@ -40,6 +40,21 @@ public class Medico extends Responsavel{
         throw new DataInvalidaException("Nenhuma consulta encontrada para " + Util.getData_horaFormatada(data, horario));
     }
 
+    public void adicionarDetalheConsulta(LocalDate data, int horario, String detalhe) throws Exception {
+        Consulta c = getConsulta(data, horario);
+        c.setDetalhes(detalhe);
+    }
+
+    public void adicionarSintomaConsulta(LocalDate data, int horario, String sintoma) throws Exception {
+        Consulta c = getConsulta(data, horario);
+        c.setSintoma(sintoma);
+    }
+
+    public void adicionarExameConsulta(LocalDate data, int horario, Exame exame) throws Exception {
+        Consulta c = getConsulta(data, horario);
+        c.setExame(exame);
+    }
+
     public String gerarProntuario(Consulta consulta){
         StringBuilder prontuario = new StringBuilder();
 
@@ -69,6 +84,10 @@ public class Medico extends Responsavel{
         } else {
             prontuario.append("Nenhum exame solicitado.\n");
         }
+        prontuario.append("\n=== INFORMAÇÕES GERAIS ===\n");
+        prontuario.append("Médico: ").append(consulta.getMedico().getNome()).append("\n");
+        prontuario.append("Feito em: ").append(Util.getData_horaFormatada(consulta.getData(), consulta.getHorario()));
+
         consulta.setStatus(Status.CONCLUIDO);
         return prontuario.toString();
     }

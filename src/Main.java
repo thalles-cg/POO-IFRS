@@ -18,7 +18,7 @@ public class Main {
 
         try {
             paciente.marcarConsulta(medico, LocalDate.now(), 10, TipoConsulta.RETORNO);
-            paciente.marcarConsulta(medico, LocalDate.now(), 10, TipoConsulta.RETORNO);
+            paciente.marcarConsulta(medico, LocalDate.now(), 11, TipoConsulta.RETORNO);
         } catch (Exception e) {
             System.out.print("ERRO: ");
             System.out.println(e.getMessage());
@@ -33,9 +33,23 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-//        paciente.getUltimaConsulta().setDetalhes("detalhe");
-//        paciente.getUltimaConsulta().setSintoma("sintoma");
-        Exame exame = new Exame("Exame bom", data, 10, tecnico, paciente);
+        try{
+            medico.adicionarSintomaConsulta(data, 10, "dor :(");
+
+            Exame exame = new Exame("Exame urgente", paciente);
+            medico.adicionarExameConsulta(data, 10, exame);
+        } catch (Exception e){
+            System.out.print("ERRO: ");
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            System.out.println(medico.gerarProntuario(medico.getConsulta(data, 10)));
+        } catch (Exception e) {
+            System.out.print("ERRO: ");
+            System.out.println(e.getMessage());
+        }
+
 //        paciente.getUltimaConsulta().setExame(exame);
 //        System.out.println(medico.gerarProntuario(paciente.getUltimaConsulta()));
 //

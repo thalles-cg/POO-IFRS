@@ -14,12 +14,9 @@ public class Exame implements Agendavel{
     private Status status;
     private String laudo;
 
-    public Exame(String nome, LocalDate data, int horario, Responsavel responsavel, Paciente paciente) {
+    public Exame(String nome, Paciente paciente) {
         this.nome = nome;
-        this.data_hora = horario+"h " + data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        this.responsavel = responsavel;
         this.paciente = paciente;
-        this.status = Status.MARCADO;
     }
 
     @Override
