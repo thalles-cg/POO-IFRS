@@ -5,7 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Consulta implements Agendavel{
-    private String data_hora;
+    private LocalDate data;
+    private int horario;
     private TipoConsulta tipoConsulta;
     private Medico medico;
     private Paciente paciente;
@@ -15,8 +16,9 @@ public class Consulta implements Agendavel{
     private ArrayList<String> sintomas = new ArrayList<>();
     private ArrayList<Exame> exames = new ArrayList<>();
 
-    public Consulta(LocalDate data, int horario, TipoConsulta tipoConsulta, Medico medico, Paciente paciente) {
-        this.data_hora = horario+"h " + data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    Consulta(LocalDate data, int horario, TipoConsulta tipoConsulta, Medico medico, Paciente paciente) {
+        this.data = data;
+        this.horario = horario;
         this.tipoConsulta = tipoConsulta;
         this.medico = medico;
         this.paciente = paciente;
@@ -41,9 +43,6 @@ public class Consulta implements Agendavel{
         this.status = status;
     }
 
-    public String getData_hora() {
-        return data_hora;
-    }
 
     public TipoConsulta getTipoConsulta() {
         return tipoConsulta;
@@ -78,13 +77,28 @@ public class Consulta implements Agendavel{
         this.exames.add(exame);
     }
 
+    public LocalDate getData() {
+        return data;
+    }
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
+
+    public int getHorario() {
+        return horario;
+    }
+    public void setHorario(int horario) {
+        this.horario = horario;
+    }
+
     @Override
     public String toString() {
             return String.format(
-            "Consulta em %s - Tipo: %s - Médico: %s - Status: %s",
-            this.getData_hora(), 
+            "%s - Tipo: %s - Médico: %s - Paciente: %s - Status: %s",
+            Util.getData_horaFormatada(this.data, this.horario),
             this.getTipoConsulta(),
-            this.getMedico().getNome(), 
+            this.getMedico().getNome(),
+            this.getPaciente().getNome(),
             this.getStatus()
         );
     }

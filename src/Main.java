@@ -12,33 +12,39 @@ public class Main {
         medico.setEspecialidades("haha");
         medico.setEspecialidades("hihi");
 
-        LocalDate data  = LocalDate.of(2025, 5, 30);
+        LocalDate data  = LocalDate.now();
         medico.abrirAgenda(data);
-        medico.abrirAgenda(LocalDate.of(2025, 6, 14));
+        medico.abrirAgenda(LocalDate.of(2024, 6, 14));
 
         try {
-            paciente.marcarConsulta(medico, LocalDate.of(2025, 6, 14), 10, TipoConsulta.RETORNO);
-
-            paciente.marcarConsulta(medico, LocalDate.of(2025, 6, 14), 10, TipoConsulta.RETORNO);
-
+            paciente.marcarConsulta(medico, LocalDate.now(), 10, TipoConsulta.RETORNO);
+            paciente.marcarConsulta(medico, LocalDate.now(), 10, TipoConsulta.RETORNO);
         } catch (Exception e) {
-            System.out.println("ERRO AO MARCAR CONSULTA");
+            System.out.print("ERRO: ");
             System.out.println(e.getMessage());
         }
-        paciente.getUltimaConsulta().setDetalhes("detalhe");
-        paciente.getUltimaConsulta().setSintoma("sintoma");
 
+        System.out.println(medico.getConsultasMarcadas());
+        try {
+            System.out.println(medico.getConsulta(data, 10));
+
+        } catch (Exception e) {
+            System.out.print("ERRO: ");
+            System.out.println(e.getMessage());
+        }
+
+//        paciente.getUltimaConsulta().setDetalhes("detalhe");
+//        paciente.getUltimaConsulta().setSintoma("sintoma");
         Exame exame = new Exame("Exame bom", data, 10, tecnico, paciente);
-        paciente.getUltimaConsulta().setExame(exame);
-
-        System.out.println(medico.gerarProntuario(paciente.getUltimaConsulta()));
-        
-        paciente.irParaExame(exame);
-        System.out.println(medico.gerarLaudo(exame));
-
-
-        System.out.println(paciente.getHistoricoConsultas());
-        System.out.println(paciente.getHistoricoExames());
+//        paciente.getUltimaConsulta().setExame(exame);
+//        System.out.println(medico.gerarProntuario(paciente.getUltimaConsulta()));
+//
+//        paciente.irParaExame(exame);
+//        System.out.println(medico.gerarLaudo(exame));
+//
+//
+//        System.out.println(paciente.getHistoricoConsultas());
+//        System.out.println(paciente.getHistoricoExames());
 
     }
 }

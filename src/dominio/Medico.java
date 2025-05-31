@@ -9,7 +9,7 @@ public class Medico extends Responsavel{
     private String crm;
     private ArrayList<String> especialidades = new ArrayList<>();
     private ArrayList<Integer> disponibilidades = new ArrayList<>(Arrays.asList(9, 10, 11, 12, 13, 14, 15, 16, 17));
-    private ArrayList<Consulta> consultas = new ArrayList<>();
+    private ArrayList<Consulta> consultasMarcadas = new ArrayList<>();
     private HashMap<LocalDate, ArrayList<Integer>> agendaDisponivel = new HashMap<>();
 
     public Medico(String nome, String cpf, String email, String telefone, String crm, String especialidade) {
@@ -19,11 +19,25 @@ public class Medico extends Responsavel{
     }
 
     public void abrirAgenda(LocalDate data) {
-        Util.validarData(data);
+        try{
+            Util.validarData(data);
+        } catch (Exception e) {
+            System.out.print("ERRO: ");
+            System.out.println(e.getMessage());
+        }
         agendaDisponivel.put(data, new ArrayList<>(disponibilidades));
     }
     public void agendar(LocalDate data, int horario){
         agendaDisponivel.get(data).remove(Integer.valueOf(horario));
+    }
+
+    public Consulta getConsulta(LocalDate data, int horario) throws Exception{
+        for (Consulta consulta : this.consultasMarcadas){
+            if (consulta.getData().equals(data) && consulta.getHorario() == horario){
+                return consulta;
+            }
+        }
+        throw new DataInvalidaException("Nenhuma consulta encontrada para " + Util.getData_horaFormatada(data, horario));
     }
 
     public String gerarProntuario(Consulta consulta){
@@ -73,11 +87,11 @@ public class Medico extends Responsavel{
         this.especialidades.add(especialidade);
     }
 
-    public ArrayList<Consulta> getConsultas() {
-        return consultas;
+    public ArrayList<Consulta> getConsultasMarcadas() {
+        return consultasMarcadas;
     }
-    public void setConsultas(ArrayList<Consulta> consultas) {
-        this.consultas = consultas;
+    public void setConsultaMarcada(Consulta consultaMarcada) {
+        this.consultasMarcadas.add(consultaMarcada);
     }
 
     public HashMap<LocalDate, ArrayList<Integer>> getAgendaDisponivel() {
@@ -92,7 +106,7 @@ public class Medico extends Responsavel{
         return "Medico{" +
                 "crm='" + crm + '\'' +
                 ", especialidades=" + especialidades +
-                ", consultas=" + consultas +
+                ", consultas=" + consultasMarcadas +
                 ", horariosPorData=" + agendaDisponivel +
                 '}';
     }

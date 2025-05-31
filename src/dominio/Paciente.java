@@ -7,6 +7,7 @@ public class Paciente extends Pessoa{
     private String dataNascimento;
     private Sexo sexo;
     private ArrayList<Consulta> historicoConsultas = new ArrayList<>();
+    private ArrayList<Consulta> consultasMarcadas = new ArrayList<>();
     private ArrayList<Exame> historicoExames = new ArrayList<>();
 
     public Paciente(String nome, String cpf, String email, String telefone, String dataNascimento, Sexo sexo) {
@@ -16,14 +17,11 @@ public class Paciente extends Pessoa{
     }
 
     public void marcarConsulta(Medico medico,LocalDate data, int horario, TipoConsulta tipoConsulta) throws Exception {
-        if (!historicoConsultas.isEmpty() && historicoConsultas.getLast().getStatus() == Status.MARCADO) {
-            return;
-        }
-
         Util.validarDataHorario(medico, data, horario);
         Consulta consulta = new Consulta(data, horario, tipoConsulta, medico, this);
         medico.agendar(data, horario);
-        this.historicoConsultas.add(consulta);
+        medico.setConsultaMarcada(consulta);
+        this.consultasMarcadas.add(consulta);
     }
 
     public void irParaExame(Exame exame) {
@@ -45,20 +43,18 @@ public class Paciente extends Pessoa{
     }
 
     public ArrayList<Consulta> getHistoricoConsultas() {
-        return this.historicoConsultas;
+        return historicoConsultas;
     }
-    public void setHistoricoConsultas(Consulta consulta) {
-        this.historicoConsultas.add(consulta);
-    }
-
-    public Consulta getUltimaConsulta(){
-        if (historicoConsultas.isEmpty()){
-            throw new RuntimeException("Consulta está vazia");
-        }
-        return this.historicoConsultas.get(historicoConsultas.size() - 1);
+    public void setHistoricoConsultas(ArrayList<Consulta> historicoConsultas) {
+        this.historicoConsultas = historicoConsultas;
     }
 
-    
+    public ArrayList<Consulta> getConsultasMarcadas() {
+        return consultasMarcadas;
+    }
+    public void setConsultasMarcadas(ArrayList<Consulta> consultasMarcadas) {
+        this.consultasMarcadas = consultasMarcadas;
+    }
 
     public ArrayList<Exame> getHistoricoExames() {
         return historicoExames;
@@ -68,6 +64,14 @@ public class Paciente extends Pessoa{
         this.historicoExames.add(exame);
     }
 
+    public Consulta getConsultaMarcada(LocalDate data, int horario) throws Exception{
+        for (Consulta consulta : consultasMarcadas){
+            if (consulta.getData().equals(data) && consulta.getHorario() == horario){
+                return consulta;
+            }
+        }
+        throw new DataInvalidaException("Não existe nenhuma consulta marcada em " + data + " as " + horario);
+    }
     @Override
     public String toString() {
         return "Paciente [dataNascimento=" + dataNascimento + ", sexo=" + sexo + "]";
