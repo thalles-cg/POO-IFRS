@@ -39,6 +39,49 @@ public class Prontuario {
         this.medicamentos.add(medicamento);
     }
 
+    public String formatarTexto() {
+        StringBuilder prontuario = new StringBuilder();
+
+        prontuario.append("=== DETALHES DA CONSULTA ===\n");
+        if (!detalhesConsulta.isEmpty()) {
+            for (String detalhe : detalhesConsulta) {
+                prontuario.append("- ").append(detalhe).append("\n");
+            }
+        } else {
+            prontuario.append("Nenhum detalhe registrado.\n");
+        }
+
+        prontuario.append("\n=== SINTOMAS ===\n");
+        if (!sintomas.isEmpty()) {
+            for (String sintoma : sintomas) {
+                prontuario.append("- ").append(sintoma).append("\n");
+            }
+        } else {
+            prontuario.append("Nenhum sintoma registrado.\n");
+        }
+
+        prontuario.append("\n=== EXAMES SOLICITADOS ===\n");
+        if (!examesSolicitados.isEmpty()) {
+            for (String exame : examesSolicitados) {
+                prontuario.append("- ").append(exame).append("\n");
+            }
+        } else {
+            prontuario.append("Nenhum exame solicitado.\n");
+        }
+
+        prontuario.append("\n=== MEDICAMENTOS PRESCRITOS ===\n");
+        if (!medicamentos.isEmpty()) {
+            for (String medicamento : medicamentos) {
+                prontuario.append("- ").append(medicamento).append("\n");
+            }
+        } else {
+            prontuario.append("Nenhum medicamento prescrito.\n");
+        }
+
+        return prontuario.toString();
+    }
+
+
     @Override
     public String toString() {
         return "Prontuario{" +

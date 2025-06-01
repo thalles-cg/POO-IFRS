@@ -43,7 +43,9 @@ public class Main {
         }
 
         try {
-            System.out.println(medico.gerarProntuario(medico.getConsulta(data, 10)));
+            medico.encerrarConsulta(medico.getConsulta(data, 10));
+            medico.encerrarConsulta(medico.getConsulta(data, 10));
+            System.out.println(medico.getConsulta(data, 10).getProntuario().formatarTexto());
             System.out.println(medico.getConsulta(data, 10).getProntuario());
 
         } catch (Exception e) {
@@ -56,7 +58,7 @@ public class Main {
 //        System.out.println(medico.gerarLaudo(exame));
 //
 //
-//        System.out.println(paciente.getHistoricoConsultas());
+        System.out.println(paciente.getHistoricoConsultas());
 //        System.out.println(paciente.getHistoricoExames());
 
     }

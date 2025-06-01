@@ -45,8 +45,8 @@ public class Paciente extends Pessoa{
     public ArrayList<Consulta> getHistoricoConsultas() {
         return historicoConsultas;
     }
-    public void setHistoricoConsultas(ArrayList<Consulta> historicoConsultas) {
-        this.historicoConsultas = historicoConsultas;
+    public void adicionarHistoricoConsulta(Consulta historicoConsulta) {
+        this.historicoConsultas.add(historicoConsulta);
     }
 
     public ArrayList<Consulta> getConsultasMarcadas() {

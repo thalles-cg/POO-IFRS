@@ -59,49 +59,11 @@ public class Medico extends Responsavel{
         consulta.getProntuario().adicionarMedicamento(medicamento);
     }
 
-    public String gerarProntuario(Consulta consulta){
-        StringBuilder prontuario = new StringBuilder();
-
-        prontuario.append("=== DETALHES DA CONSULTA ===\n");
-        if (consulta.getProntuario().getDetalhesConsulta() != null && !consulta.getProntuario().getDetalhesConsulta().isEmpty()) {
-            for (String detalhe : consulta.getProntuario().getDetalhesConsulta()) {
-                prontuario.append("- ").append(detalhe).append("\n");
-            }
-        } else {
-            prontuario.append("Nenhum detalhe registrado.\n");
-        }
-
-        prontuario.append("\n=== SINTOMAS ===\n");
-        if (consulta.getProntuario().getSintomas() != null && !consulta.getProntuario().getSintomas().isEmpty()) {
-            for (String sintoma : consulta.getProntuario().getSintomas()) {
-                prontuario.append("- ").append(sintoma).append("\n");
-            }
-        } else {
-            prontuario.append("Nenhum sintoma registrado.\n");
-        }
-
-        prontuario.append("\n=== EXAMES SOLICITADOS ===\n");
-        if (consulta.getProntuario().getExamesSolicitados() != null && !consulta.getProntuario().getExamesSolicitados().isEmpty()) {
-            for (String exame : consulta.getProntuario().getExamesSolicitados()) {
-                prontuario.append("- ").append(exame).append("\n");
-            }
-        } else {
-            prontuario.append("Nenhum exame solicitado.\n");
-        }
-        prontuario.append("\n=== MEDICAMENTOS PRESCRITOS ===\n");
-        if (consulta.getProntuario().getMedicamentos() != null && !consulta.getProntuario().getMedicamentos().isEmpty()) {
-            for (String medicamento : consulta.getProntuario().getMedicamentos()) {
-                prontuario.append("- ").append(medicamento).append("\n");
-            }
-        } else {
-            prontuario.append("Nenhum medicamento prescrito.\n");
-        }
-        prontuario.append("\n=== INFORMAÇÕES GERAIS ===\n");
-        prontuario.append("Médico: ").append(consulta.getMedico().getNome()).append("\n");
-        prontuario.append("Feito em: ").append(Util.getData_horaFormatada(consulta.getData(), consulta.getHorario()));
-
+    public void encerrarConsulta(Consulta consulta){
+        if (consulta.getStatus() == Status.CONCLUIDO) return;
         consulta.setStatus(Status.CONCLUIDO);
-        return prontuario.toString();
+        consulta.getPaciente().getConsultasMarcadas().remove(consulta);
+        consulta.getPaciente().adicionarHistoricoConsulta(consulta);
     }
     
     public String getCrm() {
