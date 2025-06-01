@@ -36,8 +36,7 @@ public class Main {
         try{
             medico.adicionarSintomaConsulta(data, 10, "dor :(");
 
-            Exame exame = new Exame("Exame urgente", paciente);
-            medico.adicionarExameConsulta(data, 10, exame);
+            medico.adicionarExameSolicitadoConsulta(data, 10, "Exame urgente");
         } catch (Exception e){
             System.out.print("ERRO: ");
             System.out.println(e.getMessage());
@@ -45,14 +44,14 @@ public class Main {
 
         try {
             System.out.println(medico.gerarProntuario(medico.getConsulta(data, 10)));
+            System.out.println(medico.getConsulta(data, 10).getProntuario());
+
         } catch (Exception e) {
             System.out.print("ERRO: ");
             System.out.println(e.getMessage());
         }
 
-//        paciente.getUltimaConsulta().setExame(exame);
-//        System.out.println(medico.gerarProntuario(paciente.getUltimaConsulta()));
-//
+
 //        paciente.irParaExame(exame);
 //        System.out.println(medico.gerarLaudo(exame));
 //

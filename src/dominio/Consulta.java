@@ -12,9 +12,6 @@ public class Consulta implements Agendavel{
     private Paciente paciente;
     private Prontuario prontuario;
     private Status status;
-    private ArrayList<String> detalhes = new ArrayList<>();
-    private ArrayList<String> sintomas = new ArrayList<>();
-    private ArrayList<Exame> exames = new ArrayList<>();
 
     Consulta(LocalDate data, int horario, TipoConsulta tipoConsulta, Medico medico, Paciente paciente) {
         this.data = data;
@@ -23,11 +20,11 @@ public class Consulta implements Agendavel{
         this.medico = medico;
         this.paciente = paciente;
         this.status = Status.MARCADO;
+        this.prontuario = new Prontuario();
     }
 
     public Prontuario getProntuario() {
-        if(this.status == Status.CONCLUIDO) return prontuario;
-        return null;
+        return this.prontuario;
     }
 
     @Override
@@ -56,27 +53,6 @@ public class Consulta implements Agendavel{
         return paciente;
     }
 
-    public ArrayList<String> getDetalhes() {
-        return this.detalhes;
-    }
-    public void setDetalhes(String detalhe) {
-        this.detalhes.add(detalhe);
-    }
-
-    public ArrayList<String> getSintomas() {
-        return sintomas;
-    }
-    public void setSintoma(String sintoma) {
-        this.sintomas.add(sintoma);
-    }
-
-    public ArrayList<Exame> getExames() {
-        return exames;
-    }
-    public void setExame(Exame exame) {
-        this.exames.add(exame);
-    }
-
     public LocalDate getData() {
         return data;
     }
@@ -89,10 +65,6 @@ public class Consulta implements Agendavel{
     }
     public void setHorario(int horario) {
         this.horario = horario;
-    }
-
-    public void setProntuario(Prontuario prontuario) {
-        this.prontuario = prontuario;
     }
 
     @Override

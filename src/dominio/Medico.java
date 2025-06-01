@@ -41,26 +41,30 @@ public class Medico extends Responsavel{
     }
 
     public void adicionarDetalheConsulta(LocalDate data, int horario, String detalhe) throws Exception {
-        Consulta c = getConsulta(data, horario);
-        c.setDetalhes(detalhe);
+        Consulta consulta = getConsulta(data, horario);
+        consulta.getProntuario().adicionarDetalhes(detalhe);
     }
 
     public void adicionarSintomaConsulta(LocalDate data, int horario, String sintoma) throws Exception {
-        Consulta c = getConsulta(data, horario);
-        c.setSintoma(sintoma);
+        Consulta consulta = getConsulta(data, horario);
+        consulta.getProntuario().adicionarSintomas(sintoma);
     }
 
-    public void adicionarExameConsulta(LocalDate data, int horario, Exame exame) throws Exception {
-        Consulta c = getConsulta(data, horario);
-        c.setExame(exame);
+    public void adicionarExameSolicitadoConsulta(LocalDate data, int horario, String exame) throws Exception {
+        Consulta consulta = getConsulta(data, horario);
+        consulta.getProntuario().adicionarExame(exame);
+    }
+    public void adicionarMedicamentoConsulta(LocalDate data, int horario, String medicamento) throws Exception {
+        Consulta consulta = getConsulta(data, horario);
+        consulta.getProntuario().adicionarMedicamento(medicamento);
     }
 
     public String gerarProntuario(Consulta consulta){
         StringBuilder prontuario = new StringBuilder();
 
         prontuario.append("=== DETALHES DA CONSULTA ===\n");
-        if (consulta.getDetalhes() != null && !consulta.getDetalhes().isEmpty()) {
-            for (String detalhe : consulta.getDetalhes()) {
+        if (consulta.getProntuario().getDetalhesConsulta() != null && !consulta.getProntuario().getDetalhesConsulta().isEmpty()) {
+            for (String detalhe : consulta.getProntuario().getDetalhesConsulta()) {
                 prontuario.append("- ").append(detalhe).append("\n");
             }
         } else {
@@ -68,8 +72,8 @@ public class Medico extends Responsavel{
         }
 
         prontuario.append("\n=== SINTOMAS ===\n");
-        if (consulta.getSintomas() != null && !consulta.getSintomas().isEmpty()) {
-            for (String sintoma : consulta.getSintomas()) {
+        if (consulta.getProntuario().getSintomas() != null && !consulta.getProntuario().getSintomas().isEmpty()) {
+            for (String sintoma : consulta.getProntuario().getSintomas()) {
                 prontuario.append("- ").append(sintoma).append("\n");
             }
         } else {
@@ -77,12 +81,20 @@ public class Medico extends Responsavel{
         }
 
         prontuario.append("\n=== EXAMES SOLICITADOS ===\n");
-        if (consulta.getExames() != null && !consulta.getExames().isEmpty()) {
-            for (Exame exame : consulta.getExames()) {
-                prontuario.append("- ").append(exame.getNome()).append("\n");
+        if (consulta.getProntuario().getExamesSolicitados() != null && !consulta.getProntuario().getExamesSolicitados().isEmpty()) {
+            for (String exame : consulta.getProntuario().getExamesSolicitados()) {
+                prontuario.append("- ").append(exame).append("\n");
             }
         } else {
             prontuario.append("Nenhum exame solicitado.\n");
+        }
+        prontuario.append("\n=== MEDICAMENTOS PRESCRITOS ===\n");
+        if (consulta.getProntuario().getMedicamentos() != null && !consulta.getProntuario().getMedicamentos().isEmpty()) {
+            for (String medicamento : consulta.getProntuario().getMedicamentos()) {
+                prontuario.append("- ").append(medicamento).append("\n");
+            }
+        } else {
+            prontuario.append("Nenhum medicamento prescrito.\n");
         }
         prontuario.append("\n=== INFORMAÇÕES GERAIS ===\n");
         prontuario.append("Médico: ").append(consulta.getMedico().getNome()).append("\n");
