@@ -50,8 +50,9 @@ public class Medico extends Responsavel{
         consulta.getProntuario().adicionarSintomas(sintoma);
     }
 
-    public void adicionarExameSolicitadoConsulta(LocalDate data, int horario, String exame) throws Exception {
+    public void adicionarExameSolicitadoConsulta(LocalDate data, int horario, String strExame) throws Exception {
         Consulta consulta = getConsulta(data, horario);
+        Exame exame = new Exame(strExame, getConsulta(data, horario).getPaciente());
         consulta.getProntuario().adicionarExame(exame);
     }
     public void adicionarMedicamentoConsulta(LocalDate data, int horario, String medicamento) throws Exception {
@@ -59,7 +60,8 @@ public class Medico extends Responsavel{
         consulta.getProntuario().adicionarMedicamento(medicamento);
     }
 
-    public void encerrarConsulta(Consulta consulta){
+    public void encerrarConsulta(LocalDate data, int horario) throws Exception{
+        Consulta consulta = getConsulta(data, horario);
         if (consulta.getStatus() == Status.CONCLUIDO) return;
         consulta.setStatus(Status.CONCLUIDO);
         consulta.getPaciente().getConsultasMarcadas().remove(consulta);

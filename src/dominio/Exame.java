@@ -14,7 +14,7 @@ public class Exame implements Agendavel{
     private Status status;
     private String laudo;
 
-    public Exame(String nome, Paciente paciente) {
+    Exame(String nome, Paciente paciente) {
         this.nome = nome;
         this.paciente = paciente;
     }
@@ -73,6 +73,14 @@ public class Exame implements Agendavel{
 
     @Override
     public String toString() {
+        if (this.responsavel == null){
+            return String.format(
+                    "Exame: %s - Paciente: %s - Status: %s",
+                    this.nome,
+                    this.paciente.getNome(),
+                    this.status
+            );
+        }
         return String.format(
             "Exame: %s - Data/Hora: %s - Paciente: %s - Responsável: %s - Status: %s",
             this.nome,

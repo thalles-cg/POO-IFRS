@@ -24,10 +24,6 @@ public class Paciente extends Pessoa{
         this.consultasMarcadas.add(consulta);
     }
 
-    public void irParaExame(Exame exame) {
-        exame.setStatus(Status.CONCLUIDO);
-    }
-
     public String getDataNascimento() {
         return dataNascimento;
     }

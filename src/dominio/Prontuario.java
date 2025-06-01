@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Prontuario {
     private ArrayList<String> detalhesConsulta = new ArrayList<>();
     private ArrayList<String> sintomas = new ArrayList<>();
-    private ArrayList<String> examesSolicitados = new ArrayList<>();
+    private ArrayList<Exame> examesSolicitados = new ArrayList<>();
     private ArrayList<String> medicamentos = new ArrayList<>();
 
     Prontuario(){
@@ -25,10 +25,10 @@ public class Prontuario {
         this.sintomas.add(sintoma);
     }
 
-    public ArrayList<String> getExamesSolicitados() {
+    public ArrayList<Exame> getExamesSolicitados() {
         return examesSolicitados;
     }
-    public void adicionarExame(String exame){
+    public void adicionarExame(Exame exame){
         this.examesSolicitados.add(exame);
     }
 
@@ -62,8 +62,8 @@ public class Prontuario {
 
         prontuario.append("\n=== EXAMES SOLICITADOS ===\n");
         if (!examesSolicitados.isEmpty()) {
-            for (String exame : examesSolicitados) {
-                prontuario.append("- ").append(exame).append("\n");
+            for (Exame exame : examesSolicitados) {
+                prontuario.append("- ").append(exame.getNome()).append("\n");
             }
         } else {
             prontuario.append("Nenhum exame solicitado.\n");

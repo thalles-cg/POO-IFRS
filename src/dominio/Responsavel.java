@@ -32,4 +32,6 @@ public class Responsavel extends Pessoa{
     
         return laudo.toString();
     }
+
+
 }
