@@ -1,5 +1,7 @@
 package dominio;
 
+import java.time.LocalDate;
+
 public class Responsavel extends Pessoa{
     public Responsavel(String nome, String cpf, String email, String telefone) {
         super(nome, cpf, email, telefone);
@@ -7,7 +9,7 @@ public class Responsavel extends Pessoa{
 
     public String gerarLaudo(Exame exame) {
         if (exame.getStatus() != Status.CONCLUIDO){
-            throw new RuntimeException("Exame não foi concluído");
+            throw new ExameNaoTerminadoException("Exame não foi concluído");
         }
         StringBuilder laudo = new StringBuilder();
     
@@ -33,5 +35,8 @@ public class Responsavel extends Pessoa{
         return laudo.toString();
     }
 
+    public void encerrarExame(LocalDate data, int horario, Paciente paciente) {
+
+    }
 
 }

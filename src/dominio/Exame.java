@@ -7,7 +7,8 @@ import java.util.ArrayList;
 public class Exame implements Agendavel{
 
     private String nome;
-    private String data_hora;
+    private LocalDate data;
+    private int horario;
     private Paciente paciente;
     private Responsavel responsavel;
     private ArrayList<String> detalhesExame = new ArrayList<>();
@@ -39,9 +40,6 @@ public class Exame implements Agendavel{
         this.nome = nome;
     }
 
-    public String getData_hora() {
-        return data_hora;
-    }
 
     public void setResponsavel(Responsavel responsavel) {
         this.responsavel = responsavel;
@@ -84,7 +82,7 @@ public class Exame implements Agendavel{
         return String.format(
             "Exame: %s - Data/Hora: %s - Paciente: %s - Responsável: %s - Status: %s",
             this.nome,
-            this.data_hora,
+            Util.getData_horaFormatada(this.data, this.horario),
             this.paciente.getNome(),
             this.responsavel.getNome(),
             this.status
