@@ -35,8 +35,10 @@ public class Main {
 
         try{
             medico.adicionarSintomaConsulta(data, 10, "dor :(");
-
+            medico.adicionarDetalheConsulta(data, 10, "ele está com dor");
+            medico.adicionarDetalheConsulta(data, 10, "ele está triste");
             medico.adicionarExameSolicitadoConsulta(data, 10, "Exame urgente");
+            medico.adicionarMedicamentoConsulta(data, 10, "remedinho");
         } catch (Exception e){
             System.out.print("ERRO: ");
             System.out.println(e.getMessage());
@@ -53,12 +55,23 @@ public class Main {
             System.out.print("ERRO: ");
             System.out.println(e.getMessage());
         }
+
+
         System.out.println(paciente.getHistoricoConsultas());
+        System.out.println(paciente.getExamesSolicitados());
+        try {
+            System.out.println("último try\n\n");
+            Exame exame = paciente.buscarExame("Exame urgente");
+//            System.out.println(medico.gerarLaudo(exame));
+            LocalDate data2 = LocalDate.of(2025, 3, 23);
+            medico.encerrarExame(data2, 10, paciente, exame);
+            System.out.println(medico.gerarLaudo(exame));
 
-
-//        System.out.println(medico.gerarLaudo(exame));
-
-//        System.out.println(paciente.getHistoricoExames());
+        } catch (Exception e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
+        System.out.println(paciente.getExamesSolicitados());
+        System.out.println(paciente.getHistoricoExames());
 
     }
 }

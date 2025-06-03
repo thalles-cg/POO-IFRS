@@ -18,6 +18,7 @@ public class Exame implements Agendavel{
     Exame(String nome, Paciente paciente) {
         this.nome = nome;
         this.paciente = paciente;
+        this.status = Status.NAO_REALIZADO;
     }
 
     @Override
@@ -67,6 +68,19 @@ public class Exame implements Agendavel{
 
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
+    }
+
+    public LocalDate getData() {
+        return data;
+    }
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
+    public int getHorario() {
+        return horario;
+    }
+    public void setHorario(int horario) {
+        this.horario = horario;
     }
 
     @Override

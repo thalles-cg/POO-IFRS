@@ -9,6 +9,7 @@ public class Paciente extends Pessoa{
     private ArrayList<Consulta> historicoConsultas = new ArrayList<>();
     private ArrayList<Consulta> consultasMarcadas = new ArrayList<>();
     private ArrayList<Exame> historicoExames = new ArrayList<>();
+    private ArrayList<Exame> examesSolicitados = new ArrayList<>();
 
     public Paciente(String nome, String cpf, String email, String telefone, String dataNascimento, Sexo sexo) {
         super(nome, cpf, email, telefone);
@@ -22,6 +23,15 @@ public class Paciente extends Pessoa{
         medico.agendar(data, horario);
         medico.setConsultaMarcada(consulta);
         this.consultasMarcadas.add(consulta);
+    }
+
+    public Exame buscarExame(String nome) throws Exception{
+        for (Exame exame : this.examesSolicitados) {
+            if (exame.getNome().equals(nome)){
+                return exame;
+            }
+        }
+        throw new ExameNaoExiste("Nome do exame inválido. Tente novamente!");
     }
 
     public String getDataNascimento() {
@@ -58,6 +68,17 @@ public class Paciente extends Pessoa{
 
     public void setHistoricoExame(Exame exame) {
         this.historicoExames.add(exame);
+    }
+
+    public void adicionarHistoricoExame(Exame historicoExame) {
+        this.historicoExames.add(historicoExame);
+    }
+
+    public ArrayList<Exame> getExamesSolicitados() {
+        return examesSolicitados;
+    }
+    public void adicionarExameSolicitado(Exame examesSolicitado) {
+        this.examesSolicitados.add(examesSolicitado);
     }
 
     public Consulta getConsultaMarcada(LocalDate data, int horario) throws Exception{

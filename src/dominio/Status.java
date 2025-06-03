@@ -2,7 +2,8 @@ package dominio;
 
 public enum Status {
     MARCADO("Marcado"),
-    CONCLUIDO("Concluído");
+    CONCLUIDO("Concluído"),
+    NAO_REALIZADO("Não realizado");
 
     private final String descricao;
 

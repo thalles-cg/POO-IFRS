@@ -54,6 +54,7 @@ public class Medico extends Responsavel{
         Consulta consulta = getConsulta(data, horario);
         Exame exame = new Exame(strExame, getConsulta(data, horario).getPaciente());
         consulta.getProntuario().adicionarExame(exame);
+        consulta.getPaciente().adicionarExameSolicitado(exame);
     }
     public void adicionarMedicamentoConsulta(LocalDate data, int horario, String medicamento) throws Exception {
         Consulta consulta = getConsulta(data, horario);

@@ -16,7 +16,7 @@ public class Responsavel extends Pessoa{
         laudo.append("=== LAUDO DO EXAME ===\n");
         laudo.append("Paciente: ").append(exame.getPaciente().getNome()).append("\n");
         laudo.append("Exame: ").append(exame.getNome()).append("\n");
-        laudo.append("Data/Hora: ").append(exame.getData_hora()).append("\n");
+        laudo.append("Data/Hora: ").append(Util.getData_horaFormatada(exame.getData(), exame.getHorario())).append("\n");
         laudo.append("Responsável: ").append(exame.getResponsavel().getNome()).append("\n\n");
     
         laudo.append("=== DETALHES DO EXAME ===\n");
@@ -29,14 +29,28 @@ public class Responsavel extends Pessoa{
         }
     
         exame.setLaudo(laudo.toString());
-        exame.getPaciente().setHistoricoExame(exame);
-        exame.setStatus(Status.CONCLUIDO); 
-    
         return laudo.toString();
     }
 
-    public void encerrarExame(LocalDate data, int horario, Paciente paciente) {
-
+    public void encerrarExame(LocalDate data, int horario, Paciente paciente, Exame exame) throws Exception{
+        for (Exame exameSolicitado : paciente.getExamesSolicitados()){
+            if (exameSolicitado.equals(exame)){
+                exame.setData(data);
+                exame.setHorario(horario);
+                exame.setStatus(Status.CONCLUIDO);
+                exame.setResponsavel(this);
+                atualizarExamePaciente(paciente, exame);
+                return;
+            }
+        }
+       throw new ExameNaoExiste("Nome do exame inválido. Tente novamente!");
     }
+
+    public void atualizarExamePaciente(Paciente paciente, Exame exame){
+        exame.setStatus(Status.CONCLUIDO);
+        paciente.getExamesSolicitados().remove(exame);
+        paciente.adicionarHistoricoExame(exame);
+    }
+
 
 }
