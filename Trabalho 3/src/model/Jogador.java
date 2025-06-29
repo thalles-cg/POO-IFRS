@@ -1,6 +1,6 @@
 package model;
 
-public class Jogador {
+public class Jogador implements Controlavel{
     private Ponto posicao;
     private int velocidade = 5;
 

@@ -9,7 +9,7 @@ public class Main {
         frame.setSize(400, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(tela);
-        frame.addKeyListener(tela.getControle()); // adiciona o controller
+        frame.addKeyListener(tela.getControle());
         frame.setVisible(true);
 
         new Thread(tela).start();
