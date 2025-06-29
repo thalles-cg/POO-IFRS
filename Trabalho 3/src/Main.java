@@ -1,17 +1,29 @@
-import javax.swing.JFrame;
-import view.Tela;
+import javax.swing.*;
+import controller.ControleTeclado;
+import view.Fase;
+import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Jogo");
-        Tela tela = new Tela();
+        System.setProperty("sun.java2d.opengl", "true");
 
-        frame.setSize(400, 400);
+        JFrame frame = new JFrame("Jogo");
+        ControleTeclado controle = new ControleTeclado();
+        Fase fase = new Fase(controle);
+
+        frame.setUndecorated(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(tela);
-        frame.addKeyListener(tela.getControle());
+
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+
+        frame.add(fase);
+        fase.addKeyListener(controle);
+        fase.setFocusable(true);
+
+        gd.setFullScreenWindow(frame);
         frame.setVisible(true);
 
-        new Thread(tela).start();
+        fase.requestFocusInWindow();
     }
 }
