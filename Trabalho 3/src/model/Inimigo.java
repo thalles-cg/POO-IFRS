@@ -15,7 +15,8 @@ public class Inimigo extends Personagem {
     }
 
     public void moverAleatorio() {
-        int direcao = random.nextInt(4);
+        int valorAleatorio = random.nextInt(4);
+        Direcao direcao = Direcao.fromValor(valorAleatorio);
         mover(direcao);
     }
 }

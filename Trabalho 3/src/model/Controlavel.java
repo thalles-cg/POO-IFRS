@@ -1,5 +1,5 @@
 package model;
 
 public interface Controlavel {
-    void mover(int tecla);
+    void mover(Direcao direcao);
 }

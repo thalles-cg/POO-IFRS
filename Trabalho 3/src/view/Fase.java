@@ -1,8 +1,6 @@
 package view;
 
-import model.Inimigo;
-import model.Jogador;
-import model.Objetivo;
+import model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +8,6 @@ import java.util.*;
 import java.util.List;
 
 import controller.ControleTeclado;
-import model.Personagem;
 
 public class Fase extends JPanel implements Runnable {
     private Jogador jogador;
@@ -85,10 +82,10 @@ public class Fase extends JPanel implements Runnable {
     public void run() {
         while (true) {
             if (!gameOver && !vitoria) {
-                if (controle.isCima()) jogador.mover(Personagem.CIMA);
-                if (controle.isBaixo()) jogador.mover(Personagem.BAIXO);
-                if (controle.isEsquerda()) jogador.mover(Personagem.ESQUERDA);
-                if (controle.isDireita()) jogador.mover(Personagem.DIREITA);
+                if (controle.isCima()) jogador.mover(Direcao.CIMA);
+                if (controle.isBaixo()) jogador.mover(Direcao.BAIXO);
+                if (controle.isEsquerda()) jogador.mover(Direcao.ESQUERDA);
+                if (controle.isDireita()) jogador.mover(Direcao.DIREITA);
 
                 for (Inimigo inimigo : inimigos) {
                     inimigo.atualizar();
