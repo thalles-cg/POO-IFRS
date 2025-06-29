@@ -60,7 +60,6 @@ public class Main {
         System.out.println(paciente.getHistoricoConsultas());
         System.out.println(paciente.getExamesSolicitados());
         try {
-            System.out.println("último try\n\n");
             Exame exame = paciente.buscarExame("Exame urgente");
 //            System.out.println(medico.gerarLaudo(exame));
             LocalDate data2 = LocalDate.of(2025, 3, 23);
