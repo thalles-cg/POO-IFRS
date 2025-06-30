@@ -25,12 +25,18 @@ public class Fase extends JPanel implements Runnable {
     }
 
     public void iniciar() {
-        jogador = new Jogador(50, 50, faseAtual * 5);
-        objetivo = new Objetivo(300, 300);
+        if (faseAtual == 1) jogador = new Jogador(10, new Random().nextInt(500), faseAtual * 8);
+        else jogador = new Jogador(10, new Random().nextInt(500), faseAtual + 8);
+
+        Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+        int larguraTela = tela.width;
+        int alturaTela = tela.height;
+
+        objetivo = new Objetivo(larguraTela - 100, new Random().nextInt(alturaTela - 100) + 50);
         inimigos = new ArrayList<>();
 
-        for (int i = 0; i < faseAtual * 2; i++) {
-            inimigos.add(new Inimigo(100 + i * 30, 100, faseAtual));
+        for (int i = 0; i < faseAtual * 4; i++) {
+            inimigos.add(new Inimigo(new Random().nextInt(larguraTela - 200) + 50, new Random().nextInt(alturaTela), faseAtual));
         }
     }
 
@@ -80,6 +86,7 @@ public class Fase extends JPanel implements Runnable {
 
     @Override
     public void run() {
+        this.vitoria = false;
         while (true) {
             if (!gameOver && !vitoria) {
                 if (controle.isCima()) jogador.mover(Direcao.CIMA);
@@ -92,6 +99,18 @@ public class Fase extends JPanel implements Runnable {
                 }
                 verificarColisoes();
                 repaint();
+            }
+            if (vitoria) {
+                repaint();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                faseAtual++;
+                vitoria = false;
+                iniciar();
             }
             try {
                 Thread.sleep(20);
