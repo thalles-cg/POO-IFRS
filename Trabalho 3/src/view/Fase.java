@@ -4,6 +4,7 @@ import model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
@@ -30,6 +31,26 @@ public class Fase extends JPanel implements Runnable {
         new Thread(this).start();
     }
 
+    private void desenharTextoCentralizado(Graphics g, String msg, Color cor, int tamanhoFonte) {
+        try {
+            InputStream is = getClass().getResourceAsStream("/resources/font/PressStart2P-Regular.ttf");
+            Font arcade = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont((float) tamanhoFonte);
+            g.setFont(arcade);
+        } catch (Exception e) {
+            g.setFont(new Font("Arial", Font.BOLD, tamanhoFonte)); // fallback
+        }
+
+        FontMetrics fm = g.getFontMetrics();
+        int textWidth = fm.stringWidth(msg);
+        int textHeight = fm.getHeight();
+
+        int x = (getWidth() - textWidth) / 2;
+        int y = (getHeight() - textHeight) / 2 + fm.getAscent();
+
+        g.setColor(cor);
+        g.drawString(msg, x, y);
+    }
+
     public void iniciar() {
         if (faseAtual == 1) jogador = new Jogador(10, new Random().nextInt(500), faseAtual * 8);
         else jogador = new Jogador(10, new Random().nextInt(500), faseAtual + 8);
@@ -42,7 +63,7 @@ public class Fase extends JPanel implements Runnable {
         inimigos = new ArrayList<>();
 
         for (int i = 0; i < faseAtual * 4; i++) {
-            inimigos.add(new Inimigo(new Random().nextInt(larguraTela - 200) + 50, new Random().nextInt(alturaTela), faseAtual*2));
+            inimigos.add(new Inimigo(new Random().nextInt(larguraTela - 200) + 100, new Random().nextInt(alturaTela), faseAtual*2));
         }
     }
 
@@ -52,12 +73,10 @@ public class Fase extends JPanel implements Runnable {
 
         g.drawImage(fundo, 0, 0, getWidth(), getHeight(), this);
         if (gameOver) {
-            g.setColor(Color.RED);
-            g.drawString("Game Over!", 150, 150);
+            desenharTextoCentralizado(g, "Game Over!", Color.RED, 36);
             return;
         } else if (vitoria) {
-            g.setColor(Color.GREEN);
-            g.drawString("Fase Concluída!", 150, 150);
+            desenharTextoCentralizado(g, "Fase Concluída!", Color.GREEN, 56);
             return;
         }
 
