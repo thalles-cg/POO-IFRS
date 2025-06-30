@@ -4,6 +4,7 @@ import model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 import java.util.*;
 import java.util.List;
 
@@ -16,10 +17,15 @@ public class Fase extends JPanel implements Runnable {
     private int faseAtual = 1;
     private boolean gameOver = false;
     private boolean vitoria = false;
-    private ControleTeclado controle;
+    private final ControleTeclado controle;
+    private Image fundo;
 
     public Fase(ControleTeclado controle) {
         this.controle = controle;
+        URL imgURL = getClass().getResource("/resources/img/grass.jpg");
+        if (imgURL != null) {
+            this.fundo = new ImageIcon(imgURL).getImage();
+        }
         iniciar();
         new Thread(this).start();
     }
@@ -44,6 +50,7 @@ public class Fase extends JPanel implements Runnable {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        g.drawImage(fundo, 0, 0, getWidth(), getHeight(), this);
         if (gameOver) {
             g.setColor(Color.RED);
             g.drawString("Game Over!", 150, 150);
