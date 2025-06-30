@@ -3,7 +3,9 @@ package model;
 import java.util.Random;
 
 public class Inimigo extends Personagem {
-    private Random random = new Random();
+    private final Random random = new Random();
+    private long ultimoMovimento = 0;
+    private final int intervaloMovimento = 300; // em milissegundos
 
     public Inimigo(int x, int y, int velocidade) {
         super(x, y, velocidade);
@@ -11,7 +13,11 @@ public class Inimigo extends Personagem {
 
     @Override
     public void atualizar() {
-        moverAleatorio();
+        long agora = System.currentTimeMillis();
+        if (agora - ultimoMovimento >= intervaloMovimento) {
+            moverAleatorio();
+            ultimoMovimento = agora;
+        }
     }
 
     public void moverAleatorio() {

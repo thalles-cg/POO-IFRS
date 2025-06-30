@@ -42,7 +42,7 @@ public class Fase extends JPanel implements Runnable {
         inimigos = new ArrayList<>();
 
         for (int i = 0; i < faseAtual * 4; i++) {
-            inimigos.add(new Inimigo(new Random().nextInt(larguraTela - 200) + 50, new Random().nextInt(alturaTela), faseAtual));
+            inimigos.add(new Inimigo(new Random().nextInt(larguraTela - 200) + 50, new Random().nextInt(alturaTela), faseAtual*2));
         }
     }
 
