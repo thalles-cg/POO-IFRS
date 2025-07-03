@@ -16,7 +16,7 @@ public class Main {
 
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice gd = ge.getDefaultScreenDevice();
-    
+
         frame.add(fase);
         fase.addKeyListener(controle);
         fase.setFocusable(true);

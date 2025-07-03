@@ -1,19 +1,16 @@
 package view;
 
 import model.*;
+import controller.ControleTeclado;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
-
-import controller.ControleTeclado;
 
 public class Fase extends JPanel implements Runnable {
     private Jogador jogador;
@@ -24,7 +21,6 @@ public class Fase extends JPanel implements Runnable {
     private boolean vitoria = false;
     private final ControleTeclado controle;
     private Image fundo;
-    private final int ESCALA_SPRITE_JOGADOR = 3;
 
     public Fase(ControleTeclado controle) {
         this.controle = controle;
@@ -42,7 +38,7 @@ public class Fase extends JPanel implements Runnable {
             Font arcade = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont((float) tamanhoFonte);
             g.setFont(arcade);
         } catch (Exception e) {
-            g.setFont(new Font("Arial", Font.BOLD, tamanhoFonte)); // fallback
+            g.setFont(new Font("Arial", Font.BOLD, tamanhoFonte));
         }
 
         FontMetrics fm = g.getFontMetrics();
@@ -60,14 +56,13 @@ public class Fase extends JPanel implements Runnable {
         BufferedImage parado = null;
         BufferedImage andando = null;
         try {
-             parado = ImageIO.read(getClass().getResourceAsStream("/resources/spritesheet/jogador/Cat/Cat-2-Idle.png"));
-             andando = ImageIO.read(getClass().getResourceAsStream("/resources/spritesheet/jogador/Cat/Cat-2-Run.png"));
-        } catch (IOException e) {
+            parado = ImageIO.read(getClass().getResourceAsStream("/resources/spritesheet/jogador/Cat/Cat-2-Idle.png"));
+            andando = ImageIO.read(getClass().getResourceAsStream("/resources/spritesheet/jogador/Cat/Cat-2-Run.png"));
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        if (faseAtual == 1) jogador = new Jogador(10, new Random().nextInt(500), faseAtual * 8, parado, andando);
-        else jogador = new Jogador(10, new Random().nextInt(500), faseAtual + 8, parado, andando);
+        jogador = new Jogador(10, new Random().nextInt(500), faseAtual * 8, parado, andando);
 
         Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
         int larguraTela = tela.width;
@@ -77,7 +72,7 @@ public class Fase extends JPanel implements Runnable {
         inimigos = new ArrayList<>();
 
         for (int i = 0; i < faseAtual * 4; i++) {
-            inimigos.add(new Inimigo(new Random().nextInt(larguraTela - 200) + 100, new Random().nextInt(alturaTela), faseAtual*2, andando));
+            inimigos.add(new Inimigo(new Random().nextInt(larguraTela - 200) + 100, new Random().nextInt(alturaTela), faseAtual * 2, andando));
         }
     }
 
@@ -106,23 +101,23 @@ public class Fase extends JPanel implements Runnable {
             return;
         }
 
-        BufferedImage img = jogador.getImagemAtual();
-        int largura = img.getWidth() * ESCALA_SPRITE_JOGADOR;
-        int altura = img.getHeight() * ESCALA_SPRITE_JOGADOR;
-
-        desenharSprite(g, jogador.getImagemAtual(), jogador.getPosicao().x, jogador.getPosicao().y, ESCALA_SPRITE_JOGADOR, jogador.isViradoParaEsquerda());
-
+        desenharSprite(g, jogador.getImagemAtual(), jogador.getPosicao().x, jogador.getPosicao().y, jogador.getEscalaSprite(), jogador.isViradoParaEsquerda());
 
         for (Inimigo inimigo : inimigos) {
-            g.drawImage(inimigo.getImagemAtual(), inimigo.getPosicao().x, inimigo.getPosicao().y, null);
+            desenharSprite(g, inimigo.getImagemAtual(), inimigo.getPosicao().x, inimigo.getPosicao().y, inimigo.getEscalaSprite(), inimigo.isViradoParaEsquerda());
         }
 
         g.setColor(Color.YELLOW);
         g.fillOval(objetivo.getPosicao().x, objetivo.getPosicao().y, 20, 20);
+        // Teste de colisão
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(new Color(255, 0, 0, 100));
+        Rectangle hitbox = jogador.getRetanguloColisao();
+        g2d.fill(hitbox);
     }
 
     private void verificarColisoes() {
-        Rectangle rJogador = new Rectangle(jogador.getPosicao().x, jogador.getPosicao().y, 20, 20);
+        Rectangle rJogador = jogador.getRetanguloColisao();
         Rectangle rObjetivo = new Rectangle(objetivo.getPosicao().x, objetivo.getPosicao().y, 20, 20);
 
         if (rJogador.intersects(rObjetivo)) {
@@ -131,8 +126,7 @@ public class Fase extends JPanel implements Runnable {
         }
 
         for (Inimigo inimigo : inimigos) {
-            Rectangle rInimigo = new Rectangle(inimigo.getPosicao().x, inimigo.getPosicao().y, 20, 20);
-            if (rJogador.intersects(rInimigo)) {
+            if (rJogador.intersects(inimigo.getRetanguloColisao())) {
                 gameOver = true;
                 return;
             }
@@ -175,9 +169,5 @@ public class Fase extends JPanel implements Runnable {
                 e.printStackTrace();
             }
         }
-    }
-
-    public Jogador getJogador() {
-        return jogador;
     }
 }

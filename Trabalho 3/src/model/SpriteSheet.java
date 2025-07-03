@@ -34,5 +34,7 @@ public class SpriteSheet {
         frameAtual = 0;
         contador = 0;
     }
+
+
 }
 
