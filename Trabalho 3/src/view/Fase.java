@@ -2,8 +2,12 @@ package view;
 
 import model.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
@@ -20,6 +24,7 @@ public class Fase extends JPanel implements Runnable {
     private boolean vitoria = false;
     private final ControleTeclado controle;
     private Image fundo;
+    private final int ESCALA_SPRITE_JOGADOR = 3;
 
     public Fase(ControleTeclado controle) {
         this.controle = controle;
@@ -52,8 +57,17 @@ public class Fase extends JPanel implements Runnable {
     }
 
     public void iniciar() {
-        if (faseAtual == 1) jogador = new Jogador(10, new Random().nextInt(500), faseAtual * 8);
-        else jogador = new Jogador(10, new Random().nextInt(500), faseAtual + 8);
+        BufferedImage parado = null;
+        BufferedImage andando = null;
+        try {
+             parado = ImageIO.read(getClass().getResourceAsStream("/resources/spritesheet/jogador/Cat/Cat-2-Idle.png"));
+             andando = ImageIO.read(getClass().getResourceAsStream("/resources/spritesheet/jogador/Cat/Cat-2-Run.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (faseAtual == 1) jogador = new Jogador(10, new Random().nextInt(500), faseAtual * 8, parado, andando);
+        else jogador = new Jogador(10, new Random().nextInt(500), faseAtual + 8, parado, andando);
 
         Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
         int larguraTela = tela.width;
@@ -63,7 +77,19 @@ public class Fase extends JPanel implements Runnable {
         inimigos = new ArrayList<>();
 
         for (int i = 0; i < faseAtual * 4; i++) {
-            inimigos.add(new Inimigo(new Random().nextInt(larguraTela - 200) + 100, new Random().nextInt(alturaTela), faseAtual*2));
+            inimigos.add(new Inimigo(new Random().nextInt(larguraTela - 200) + 100, new Random().nextInt(alturaTela), faseAtual*2, andando));
+        }
+    }
+
+    private void desenharSprite(Graphics g, BufferedImage imagem, int x, int y, int escala, boolean viradoParaEsquerda) {
+        Graphics2D g2d = (Graphics2D) g;
+        int largura = imagem.getWidth() * escala;
+        int altura = imagem.getHeight() * escala;
+
+        if (viradoParaEsquerda) {
+            g2d.drawImage(imagem, x + largura, y, -largura, altura, null);
+        } else {
+            g2d.drawImage(imagem, x, y, largura, altura, null);
         }
     }
 
@@ -80,12 +106,15 @@ public class Fase extends JPanel implements Runnable {
             return;
         }
 
-        g.setColor(Color.BLUE);
-        g.fillRect(jogador.getPosicao().x, jogador.getPosicao().y, 20, 20);
+        BufferedImage img = jogador.getImagemAtual();
+        int largura = img.getWidth() * ESCALA_SPRITE_JOGADOR;
+        int altura = img.getHeight() * ESCALA_SPRITE_JOGADOR;
 
-        g.setColor(Color.RED);
+        desenharSprite(g, jogador.getImagemAtual(), jogador.getPosicao().x, jogador.getPosicao().y, ESCALA_SPRITE_JOGADOR, jogador.isViradoParaEsquerda());
+
+
         for (Inimigo inimigo : inimigos) {
-            g.fillRect(inimigo.getPosicao().x, inimigo.getPosicao().y, 20, 20);
+            g.drawImage(inimigo.getImagemAtual(), inimigo.getPosicao().x, inimigo.getPosicao().y, null);
         }
 
         g.setColor(Color.YELLOW);
@@ -119,6 +148,8 @@ public class Fase extends JPanel implements Runnable {
                 if (controle.isBaixo()) jogador.mover(Direcao.BAIXO);
                 if (controle.isEsquerda()) jogador.mover(Direcao.ESQUERDA);
                 if (controle.isDireita()) jogador.mover(Direcao.DIREITA);
+
+                jogador.atualizar();
 
                 for (Inimigo inimigo : inimigos) {
                     inimigo.atualizar();
