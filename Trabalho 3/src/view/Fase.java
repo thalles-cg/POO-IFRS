@@ -138,19 +138,19 @@ public class Fase extends JPanel implements Runnable {
 
         for (Inimigo inimigo : inimigos) {
             desenharSprite(g, inimigo.getImagemAtual(), inimigo.getPosicao().x, inimigo.getPosicao().y, inimigo.getEscalaSprite(), inimigo.isViradoParaEsquerda());
-            Graphics2D g2dIni = (Graphics2D) g;
-            g2dIni.setColor(new Color(255, 0, 0, 100));
-            Rectangle hitbox = inimigo.getRetanguloColisao();
-            g2dIni.fill(hitbox);
+//            Graphics2D g2dIni = (Graphics2D) g;
+//            g2dIni.setColor(new Color(255, 0, 0, 100));
+//            Rectangle hitbox = inimigo.getRetanguloColisao();
+//            g2dIni.fill(hitbox);
         }
 
         g.setColor(Color.YELLOW);
         g.fillOval(objetivo.getPosicao().x, objetivo.getPosicao().y, 20, 20);
 
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(new Color(255, 0, 0, 100));
-        Rectangle hitbox = jogador.getRetanguloColisao();
-        g2d.fill(hitbox);
+//        Graphics2D g2d = (Graphics2D) g;
+//        g2d.setColor(new Color(255, 0, 0, 100));
+//        Rectangle hitbox = jogador.getRetanguloColisao();
+//        g2d.fill(hitbox);
 
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.PLAIN, 14));
