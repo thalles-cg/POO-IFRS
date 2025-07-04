@@ -31,6 +31,8 @@ public class Jogador extends Personagem implements Animavel {
         else if (direcao == Direcao.DIREITA) viradoParaEsquerda = false;
     }
 
+
+
     @Override
     public void atualizar() {
         atualizarAnimacao();
@@ -54,8 +56,18 @@ public class Jogador extends Personagem implements Animavel {
         return viradoParaEsquerda;
     }
 
+    @Override
     public int getEscalaSprite() {
         return ESCALA_SPRITE;
+    }
+    @Override
+    public int getLarguraSprite() {
+        return LARGURA_SPRITE;
+    }
+
+    @Override
+    public int getAlturaSprite() {
+        return ALTURA_SPRITE;
     }
 
     public Rectangle getRetanguloColisao() {

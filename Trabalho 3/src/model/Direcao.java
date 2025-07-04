@@ -1,21 +1,27 @@
 package model;
 
 public enum Direcao {
-    CIMA(0), BAIXO(1), ESQUERDA(2), DIREITA(3);
+    CIMA(0, -1),
+    BAIXO(0, 1),
+    ESQUERDA(-1, 0),
+    DIREITA(1, 0),
+    CIMA_ESQUERDA(-1, -1),
+    CIMA_DIREITA(1, -1),
+    BAIXO_ESQUERDA(-1, 1),
+    BAIXO_DIREITA(1, 1);
 
-    private final int valor;
+    private final int dx, dy;
 
-    Direcao(int valor) {
-        this.valor = valor;
+    Direcao(int dx, int dy) {
+        this.dx = dx;
+        this.dy = dy;
     }
 
-    public int getValor() {
-        return valor;
-    }
-    public static Direcao fromValor(int valor) {
-        for (Direcao d : values()) {
-            if (d.valor == valor) return d;
-        }
-        throw new IllegalArgumentException("Valor inválido: " + valor);
+    public int dx() { return dx; }
+    public int dy() { return dy; }
+
+    public static Direcao fromValor(int val) {
+        return values()[val % values().length];
     }
 }
+
